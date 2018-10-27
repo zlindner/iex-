@@ -1,0 +1,6 @@
+build
+lib
+bin
+
+.DS_Store
+.clang-format
