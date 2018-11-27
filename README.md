@@ -6,6 +6,7 @@ A C++ wrapper for the IEX api (https://iextrading.com/developer/docs/).
 
 ## Built with
 
+-   [libcurl](https://curl.haxx.se/libcurl/) - Multiprotocol file transfer library
 -   [JSON](https://github.com/nlohmann/json) - JSON library
 
 ## License
