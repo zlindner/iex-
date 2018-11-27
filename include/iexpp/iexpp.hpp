@@ -39,11 +39,24 @@ namespace iexpp {
      */
     bool valid_symbol(std::string symbol);
 
+    /*
+     * Helper function for getting the string representation of a boolean value
+     * @param b the boolean to be converted to a string
+     * @return the string representation of the passed boolean value
+     */
+    std::string bool_to_string(bool b);
+
     namespace stocks {
+
+        typedef enum class range { FIVE_Y, TWO_Y, ONE_Y, YTD, SIX_M, THREE_M, ONE_M, ONE_D, DATE, DYNAMIC } range;
+
+        inline std::string range_to_string(range r);
 
         // json batch_request();
 
         json book(std::string symbol);
+
+        json chart(std::string symbol, range r, bool chart_reset = false, bool chart_simplify = false, int chart_interval = 1, bool change_from_close = false, int chart_last = 0);
     }
 }
 

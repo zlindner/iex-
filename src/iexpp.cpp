@@ -1,9 +1,11 @@
 #include "iexpp/iexpp.hpp"
 
+// TODO add usings
+
 int main() {
     //
 
-    std::cout << iexpp::stocks::book("AAPL") << std::endl;
+    std::cout << iexpp::stocks::chart("AAPL", iexpp::stocks::range::FIVE_Y) << std::endl;
 
     return 0;
 }
@@ -90,9 +92,38 @@ bool iexpp::valid_symbol(std::string symbol) {
     return false;
 }
 
+inline std::string iexpp::bool_to_string(bool b) { return b ? "true" : "false"; }
+
 /*
  * STOCKS
  */
+
+std::string iexpp::stocks::range_to_string(iexpp::stocks::range r) {
+    switch (r) {
+    case iexpp::stocks::range::FIVE_Y:
+        return "5Y";
+    case iexpp::stocks::range::TWO_Y:
+        return "2Y";
+    case iexpp::stocks::range::ONE_Y:
+        return "1Y";
+    case iexpp::stocks::range::YTD:
+        return "YTD";
+    case iexpp::stocks::range::SIX_M:
+        return "6M";
+    case iexpp::stocks::range::THREE_M:
+        return "3M";
+    case iexpp::stocks::range::ONE_M:
+        return "1M";
+    case iexpp::stocks::range::ONE_D:
+        return "1D";
+    case iexpp::stocks::range::DATE:
+        return "DATE";
+    case iexpp::stocks::range::DYNAMIC:
+        return "DYNAMIC";
+    default:
+        return "";
+    }
+}
 
 // batch
 
@@ -106,4 +137,26 @@ json iexpp::stocks::book(std::string symbol) {
     book = get_json("/stock/" + symbol + "/book");
 
     return book;
+}
+
+json iexpp::stocks::chart(std::string symbol, iexpp::stocks::range r, bool chart_reset, bool chart_simplify, int chart_interval, bool change_from_close, int chart_last) {
+    json chart;
+    std::string options;
+    std::string params;
+
+    if (!valid_symbol(symbol)) {
+        return NULL;
+    }
+
+    options = "/" + iexpp::stocks::range_to_string(r);
+
+    params = "?chartReset=" + bool_to_string(chart_reset);
+    params += "?chartSimplify=" + bool_to_string(chart_simplify);
+    params += "?chartInterval=" + std::to_string(chart_interval);
+    params += "?changeFromClose=" + bool_to_string(change_from_close);
+    params += "?chartLast=" + std::to_string(chart_last);
+
+    chart = get_json("/stock/" + symbol + "/chart" + options + params);
+
+    return chart;
 }

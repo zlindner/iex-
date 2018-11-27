@@ -1,5 +1,6 @@
-CC := clang++
-CFLAGS := -g -Wall -std=c++11 -I include -L /usr/local/lib
+CC := clang++ # macOS compiler
+#CC := g++ alternative compiler
+CFLAGS := -g -Wall -std=c++17 -I include -L /usr/local/lib
 LIBS := -l curl
 
 iexpp:
